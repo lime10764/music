@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Lime Music</title>
+<meta name="description" content="Lime Music：网页版是液态玻璃播放器，App 是经典简洁 UI。国内可访问，APK 走 GitHub 加速下载。" />
+<style>
+  :root{
+    --bg-img:   url("https://cdn.jsdelivr.net/gh/lime10764/WMJ10764.github.io@main/image_download_1787389320083.jpg");
+    --bg-img-1: url("https://gcore.jsdelivr.net/gh/lime10764/WMJ10764.github.io@main/image_download_1787389320083.jpg");
+    --bg-img-2: url("https://fastly.jsdelivr.net/gh/lime10764/WMJ10764.github.io@main/image_download_1787389320083.jpg");
+    --bg-img-3: url("https://gh.llkk.cc/https://raw.githubusercontent.com/lime10764/WMJ10764.github.io/main/image_download_1787389320083.jpg");
+    --bg-img-4: url("https://raw.githubusercontent.com/lime10764/WMJ10764.github.io/main/image_download_1787389320083.jpg");
+    --glass: rgba(255,255,255,.10);
+    --glass-line: rgba(255,255,255,.22);
+    --text: #e9eef5;
+    --muted: #aab3bf;
+    --accent: #b8f7d8;
+    --accent-2: #9ec9ff;
+    --btn: rgba(255,255,255,.16);
+    --btn-strong: #e9eef5;
+    --btn-strong-text: #0b1117;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#07090d;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+
+  /* 固定背景图层 */
+  .bg-layer{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image: var(--bg-img);
+    background-size:cover;background-position:center;background-repeat:no-repeat;
+    will-change:transform;transform:translateZ(0);
+  }
+  .bg-tint{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 80% -10%, rgba(120,180,255,.12), transparent 60%),
+      radial-gradient(900px 700px at 10% 110%, rgba(120,255,190,.08), transparent 55%),
+      linear-gradient(180deg, rgba(7,9,13,.28), rgba(7,9,13,.45));
+  }
+
+  body{
+    min-height:100vh;
+    overflow-x:hidden;
+    background:#07090d;
+  }
+
+  .orbs{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;will-change:transform}
+  .orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.4;mix-blend-mode:screen}
+  .orb.a{width:340px;height:340px;left:-90px;top:120px;background:#4f8bff;animation:float 14s ease-in-out infinite}
+  .orb.b{width:420px;height:420px;right:-120px;bottom:80px;background:#36d49a;animation:float 18s ease-in-out infinite reverse}
+  .orb.c{width:260px;height:260px;left:45%;top:55%;background:#a07bff;opacity:.25;animation:float 20s ease-in-out infinite}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(30px,-25px) scale(1.08)}
+  }
+
+  nav{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;max-width:1180px;margin:0 auto}
+  .logo{font-weight:600;letter-spacing:.3px;font-size:17px;display:flex;align-items:center;gap:9px}
+  .logo i{width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:inline-block;box-shadow:0 0 12px rgba(184,247,216,.55)}
+  .nav-links{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+  .nav-links a{color:var(--muted);text-decoration:none}
+  .nav-links a:hover{color:var(--text)}
+
+  main{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:34px 24px 80px}
+
+  .hero{position:relative;padding:54px 28px 44px;border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 30px 80px rgba(0,0,0,.45);overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-90px;top:-90px;width:320px;height:320px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.18),transparent 70%);filter:blur(8px);pointer-events:none}
+  .eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  h1{font-size:clamp(34px,6vw,58px);line-height:1.05;margin:0 0 16px;font-weight:650;letter-spacing:-.02em}
+  h1 span{background:linear-gradient(180deg,#fff,#aeb7c4);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);max-width:620px;font-size:16px;line-height:1.7;margin:0 0 28px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{padding:13px 20px;border-radius:14px;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;border:1px solid var(--glass-line);background:var(--btn);color:var(--text);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:.2s ease;cursor:pointer}
+  .btn:hover{border-color:rgba(255,255,255,.34);background:rgba(255,255,255,.22)}
+  .btn.strong{background:var(--btn-strong);color:var(--btn-strong-text);border-color:transparent;box-shadow:0 12px 30px rgba(255,255,255,.12)}
+  .btn.strong:hover{filter:brightness(.96)}
+  .btn .arr{font-family:ui-monospace,monospace;font-size:15px;line-height:1}
+
+  .beta-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:20px;background:rgba(110,231,214,.12);border:1px solid rgba(110,231,214,.35);color:#6ee7d6;font-size:12px;letter-spacing:1px;margin-bottom:16px}
+  .beta-tag .dot{width:6px;height:6px;border-radius:50%;background:#6ee7d6;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  .notice{margin-top:24px;padding:16px 18px;border-radius:16px;background:rgba(110,231,214,.06);border:1px solid rgba(110,231,214,.18);color:var(--muted);font-size:14px;line-height:1.7;max-width:680px}
+  .notice b{color:#6ee7d6;font-weight:600}
+
+  .grid{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{padding:24px;border-radius:22px;background:rgba(255,255,255,.045);border:1px solid var(--glass-line);backdrop-filter:blur(14px) saturate(130%);-webkit-backdrop-filter:blur(14px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,255,255,.10)}
+  .card h3{margin:0 0 8px;font-size:20px;font-weight:600}
+  .card p{margin:0;color:var(--muted);line-height:1.65;font-size:15px}
+  .card .feature-list{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .card .feature-list li{display:flex;align-items:flex-start;gap:8px;color:var(--muted);font-size:14px;line-height:1.5}
+  .card .feature-list li .ok{color:#6fcf97;font-weight:700;flex-shrink:0}
+  .card .feature-list li .no{color:#f2994a;font-weight:700;flex-shrink:0}
+  .tag{display:inline-block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 8px;border-radius:7px;border:1px solid var(--glass-line);color:var(--muted);margin-bottom:12px}
+  .tag.web{color:#cfeeff;border-color:rgba(158,201,255,.35);background:rgba(158,201,255,.08)}
+  .tag.app{color:#d6fff0;border-color:rgba(184,247,216,.32);background:rgba(184,247,216,.07)}
+
+  .steps{margin-top:46px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+  .step{padding:20px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid var(--glass-line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .step h4{margin:0 0 6px;font-size:16px}
+  .step p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+
+  .contact{margin-top:42px;text-align:center;padding:20px;border-radius:24px;border:1px solid var(--glass-line);background:rgba(255,255,255,.03);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .contact p{margin:0;color:var(--muted);font-size:14px;margin-bottom:6px}
+  .contact a{color:var(--accent);text-decoration:none;font-size:16px;border-bottom:1px dashed rgba(184,247,216,.4);padding-bottom:2px}
+  .contact a:hover{border-bottom-color:var(--accent);color:#fff}
+
+  .download{margin-top:42px;padding:28px;border-radius:24px;border:1px solid var(--glass-line);background:rgba(255,255,255,.04);backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+  .download .txt h3{margin:0 0 6px;font-size:20px}
+  .download .txt p{margin:0;color:var(--muted);font-size:14px;line-height:1.6;max-width:560px}
+  .download .btns{display:flex;gap:10px;flex-wrap:wrap}
+
+  .modal{position:fixed;inset:0;z-index:99;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.20);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+  .modal.show{display:flex}
+  .modal-box{width:90%;max-width:400px;padding:24px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg, rgba(15,18,24,.55), rgba(15,18,24,.65)), var(--bg-img) center/cover;background-blend-mode:overlay;border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 40px rgba(0,0,0,.4);animation:fadeUp .3s ease-out}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .modal-box h3{margin:0 0 6px;font-size:18px;font-weight:600}
+  .modal-box p{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.6}
+  .mail-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .mail-item{padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);text-align:center;cursor:pointer;transition:background .2s ease,border-color .2s ease;text-decoration:none;color:var(--text);font-size:14px;font-weight:500}
+  .mail-item:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.22)}
+  .mail-item small{display:block;color:var(--muted);font-size:11px;margin-top:3px;font-weight:400}
+  .modal-close{margin-top:14px;width:100%;padding:8px;border-radius:10px;background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;transition:color .2s ease}
+  .modal-close:hover{color:var(--text)}
+
+  footer{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:24px 28px 40px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid rgba(255,255,255,.06)}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--text)}
+
+  @media(max-width:520px){
+    nav{padding:14px 18px}
+    main{padding:22px 16px 60px}
+    .hero{padding:38px 20px 32px;border-radius:22px}
+    .actions .btn{flex:1 1 auto;justify-content:center}
+    .download{flex-direction:column;align-items:flex-start}
+    .mail-list{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-tint"></div>
+
+<div class="orbs" aria-hidden="true">
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+  <div class="orb c"></div>
+</div>
+
+<nav>
+  <div class="logo"><i></i> Lime Music</div>
+  <div class="nav-links">
+    <a href="#web">网页版</a>
+    <a href="#app">App</a>
+    <a href="#download">下载</a>
+  </div>
+</nav>
+
+<main>
+
+  <section class="hero" id="web">
+    <div class="beta-tag"><span class="dot"></span> 正式版 · v1.0</div>
+    <div class="eyebrow">Lime Music · 液态玻璃播放器</div>
+    <h1><span>光在界面上</span><br/>慢慢停下来。</h1>
+    <p class="sub">
+      网页版做了一点液态玻璃的效果：半透明、模糊、边缘高光，背景图从仓库拉取，光斑慢慢漂。
+      它不是为了炫，是想让听歌的时候，界面别太硬。
+      App 那边是另一件事，Lime Music 走经典简洁 UI，打开、点、听，不绕。
+    </p>
+    <div class="actions">
+      <a class="btn strong" href="https://lime10764.github.io/lime10764-liquid-glass-player/">
+        网页版体验 <span class="arr">→</span>
+      </a>
+      <a class="btn" href="#download">下载 Lime Music App</a>
+    </div>
+    <div class="notice">
+      <b>正式版 v1.0：</b>完美适配安卓系统，无闪退、无广告、无 VIP，全部功能免费开放。
+      支持后台播放、本地音乐与仓库音乐，歌词、封面、收藏等功能持续完善中。
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="tag web">网页版</div>
+      <h3>液态玻璃，不是贴图</h3>
+      <p>
+        多层模糊、透光边缘和慢速光斑叠在一起。安静时几乎能感到它在喘气。
+        背景图来自仓库，通过国内可访问的 CDN 拉取。
+      </p>
+    </div>
+    <div class="card" id="app">
+      <div class="tag app">Lime Music App</div>
+      <h3>经典简洁 UI</h3>
+      <p>
+        App 不追液态玻璃，界面更直：列表、播放、返回。
+        重点是稳、轻、少打扰。手机上用起来应该像工具，不像展台。
+      </p>
+      <ul class="feature-list">
+        <li><span class="ok">✓</span> <b>完美适配安卓：</b>各版本机型深度适配，界面与交互流畅一致。</li>
+        <li><span class="ok">✓</span> <b>稳定无闪退：</b>长时间播放、后台运行均经过实测。</li>
+        <li><span class="ok">✓</span> <b>无广告：</b>全程零广告、零弹窗打扰。</li>
+        <li><span class="ok">✓</span> <b>无 VIP：</b>全部功能免费开放，不区分会员。</li>
+        <li><span class="ok">✓</span> 支持后台播放：锁屏、切到其他应用，歌会继续播。</li>
+        <li><span class="ok">✓</span> 支持本地音乐与仓库音乐，来源自由切换。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="steps">
+    <div class="step">
+      <h4>1. 部署</h4>
+      <p>把播放器部署到 GitHub Pages，或任意静态托管。</p>
+    </div>
+    <div class="step">
+      <h4>2. 放歌</h4>
+      <p>在 music 仓库里丢音频文件，文件名就是歌名，自动识别。</p>
+    </div>
+    <div class="step">
+      <h4>3. manifest</h4>
+      <p>可选。填上歌手名，播放器会显示。</p>
+    </div>
+    <div class="step">
+      <h4>4. 换背景</h4>
+      <p>背景图也从 music 仓库取，找不到就降级成 CSS 渐变。</p>
+    </div>
+  </section>
+
+  <section class="contact">
+    <p>没有想听的歌？</p>
+    <a href="javascript:void(0)" onclick="openMailModal()">联系我 →</a>
+  </section>
+
+  <section class="download" id="download">
+    <div class="txt">
+      <h3>下载 Lime Music App</h3>
+      <p>
+        APK 放在新仓库 <b>LimeMusic</b>（单一官方地址）。页面自动从多个加速镜像中挑选当前可用的下载，
+        你只需点「下载 App」即可；下方备用按钮对应不同加速代理，某个不通时换下一个。
+      </p>
+    </div>
+    <div class="btns">
+      <a class="btn strong" id="apkMain" href="https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
+        下载 App · 自动加速 <span class="arr">↓</span>
+      </a>
+      <a class="btn" href="https://gh.llkk.cc/https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
+        备用 · gh.llkk.cc
+      </a>
+      <a class="btn" href="https://ghproxy.net/https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
+        备用 · ghproxy
+      </a>
+      <a class="btn" href="https://raw.gitmirror.com/lime10764/LimeMusic/main/app.apk">
+        备用 · gitmirror
+      </a>
+      <a class="btn" href="https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
+        GitHub 原链
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>Lime Music App · 正式版 v1.0</div>
+  <div>
+    <a href="https://lime10764.github.io/lime10764-liquid-glass-player/">网页版</a>
+    ·
+    <a href="https://github.com/lime10764/LimeMusic">App 仓库</a>
+  </div>
+</footer>
+
+<!-- 邮箱选择浮层 - 轻量版 -->
+<div class="modal" id="mailModal">
+  <div class="modal-box">
+    <h3>联系我</h3>
+    <p>选一个邮箱，会自动打开写信页并填好收件人 xzai7249@gmail.com</p>
+    <div class="mail-list">
+      <a class="mail-item" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=xzai7249@gmail.com" target="_blank">
+        QQ邮箱
+        <small>mail.qq.com</small>
+      </a>
+      <a class="mail-item" href="https://mail.163.com/js6/main.jsp?sid=&df=mail163_letter#module=write.WriteModule&params.uid=xzai7249@gmail.com" target="_blank">
+        163邮箱
+        <small>mail.163.com</small>
+      </a>
+      <a class="mail-item" href="https://mail.google.com/mail/?view=cm&fs=1&to=xzai7249@gmail.com" target="_blank">
+        Gmail
+        <small>mail.google.com</small>
+      </a>
+      <a class="mail-item" href="https://outlook.live.com/mail/0/deeplink/compose?to=xzai7249@gmail.com" target="_blank">
+        Outlook
+        <small>outlook.live.com</small>
+      </a>
+    </div>
+    <button class="modal-close" onclick="closeMailModal()">关闭</button>
+  </div>
+</div>
+
+<script>
+  var bgCandidates = [
+    "https://cdn.jsdelivr.net/gh/lime10764/WMJ10764.github.io@main/image_download_1787389320083.jpg",
+    "https://gcore.jsdelivr.net/gh/lime10764/WMJ10764.github.io@main/image_download_1787389320083.jpg",
+    "https://fastly.jsdelivr.net/gh/lime10764/WMJ10764.github.io@main/image_download_1787389320083.jpg",
+    "https://gh.llkk.cc/https://raw.githubusercontent.com/lime10764/WMJ10764.github.io/main/image_download_1787389320083.jpg",
+    "https://raw.githubusercontent.com/lime10764/WMJ10764.github.io/main/image_download_1787389320083.jpg"
+  ];
+
+  function applyBg(url){
+    var bgLayer = document.getElementById('bgLayer');
+    if(bgLayer){ bgLayer.style.backgroundImage = "url('" + url + "')"; }
+    document.documentElement.style.setProperty('--bg-img', "url('" + url + "')");
+  }
+
+  function tryBg(index){
+    if(index >= bgCandidates.length) return;
+    var img = new Image();
+    img.onload = function(){ applyBg(bgCandidates[index]); };
+    img.onerror = function(){ tryBg(index + 1); };
+    img.src = bgCandidates[index];
+  }
+  tryBg(0);
+
+  // APK 下载镜像候选（顺序 = 优先级），第一个能 HEAD 到就用它
+  var APK_BASE = "https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk";
+  var apkCandidates = [
+    "https://gh.llkk.cc/" + encodeURIComponent(APK_BASE),
+    "https://ghproxy.net/" + encodeURIComponent(APK_BASE),
+    "https://raw.gitmirror.com/lime10764/LimeMusic/main/app.apk",
+    APK_BASE
+  ];
+
+  function tryApk(index){
+    if(index >= apkCandidates.length) return;
+    var mainBtn = document.getElementById('apkMain');
+    var xhr = new (window.XMLHttpRequest || window.ActiveXObject)('MSXML2.XMLHTTP.3.0', 'MSXML2.XMLHTTP');
+    try {
+      xhr.open('HEAD', apkCandidates[index], true);
+      xhr.timeout = 6000;
+      xhr.onload = function(){
+        if(xhr.status >= 200 && xhr.status < 400){
+          if(mainBtn){ mainBtn.href = apkCandidates[index]; }
+        } else {
+          tryApk(index + 1);
+        }
+      };
+      xhr.onerror = function(){ tryApk(index + 1); };
+      xhr.ontimeout = function(){ tryApk(index + 1); };
+      xhr.send();
+    } catch(e){
+      tryApk(index + 1);
+    }
+  }
+  tryApk(0);
+
+  function openMailModal(){
+    document.getElementById('mailModal').classList.add('show');
+  }
+  function closeMailModal(){
+    document.getElementById('mailModal').classList.remove('show');
+  }
+  document.getElementById('mailModal').addEventListener('click', function(e){
+    if(e.target === this){
+      closeMailModal();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      closeMailModal();
+    }
+  });
+</script>
+
+</body>
+</html>
