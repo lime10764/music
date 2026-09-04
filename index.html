@@ -110,10 +110,18 @@
   .contact a{color:var(--accent);text-decoration:none;font-size:16px;border-bottom:1px dashed rgba(184,247,216,.4);padding-bottom:2px}
   .contact a:hover{border-bottom-color:var(--accent);color:#fff}
 
-  .download{margin-top:42px;padding:28px;border-radius:24px;border:1px solid var(--glass-line);background:rgba(255,255,255,.04);backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+  /* 下载区：两个应用卡片并排 */
+  .download-area{margin-top:42px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:820px){.download-area{grid-template-columns:1fr}}
+  .download{padding:26px;border-radius:24px;border:1px solid var(--glass-line);background:rgba(255,255,255,.04);backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%);display:flex;flex-direction:column;gap:14px}
   .download .txt h3{margin:0 0 6px;font-size:20px}
-  .download .txt p{margin:0;color:var(--muted);font-size:14px;line-height:1.6;max-width:560px}
+  .download .txt p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+  .download .ver{display:inline-block;font-size:12px;color:var(--accent);border:1px solid rgba(110,231,214,.35);background:rgba(110,231,214,.08);padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle}
+  .download .pick{margin-top:2px;font-size:13px;color:#9fc7ff}
   .download .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .download .btns .btn{flex:1 1 auto;justify-content:center;text-align:center}
+  .tip{margin-top:16px;padding:14px 18px;border-radius:16px;background:rgba(110,231,214,.06);border:1px solid rgba(110,231,214,.18);color:var(--muted);font-size:14px;line-height:1.65;max-width:680px}
+  .tip b{color:#6ee7d6}
 
   .modal{position:fixed;inset:0;z-index:99;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.20);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
   .modal.show{display:flex}
@@ -236,32 +244,63 @@
     <a href="javascript:void(0)" onclick="openMailModal()">联系我 →</a>
   </section>
 
-  <section class="download" id="download">
-    <div class="txt">
-      <h3>下载 Lime Music App</h3>
-      <p>
-        APK 放在新仓库 <b>LimeMusic</b>（单一官方地址）。页面自动从多个加速镜像中挑选当前可用的下载，
-        你只需点「下载 App」即可；下方备用按钮对应不同加速代理，某个不通时换下一个。
-      </p>
+  <section class="download-area" id="download">
+    <!-- A：Lime Music -->
+    <div class="download">
+      <div class="txt">
+        <h3>Lime Music <span class="ver">应用 A</span></h3>
+        <p>经典简洁 UI，本地音乐 + 仓库音乐。稳定流畅，适配广。</p>
+        <p class="pick">算法偏均衡，适合大多数机型。</p>
+      </div>
+      <div class="btns">
+        <a class="btn strong" id="apkA" href="https://raw.githubusercontent.com/lime10764/music/refs/heads/main/app.apk">
+          下载 A · 自动加速 <span class="arr">↓</span>
+        </a>
+        <a class="btn" href="https://gh.llkk.cc/https://raw.githubusercontent.com/lime10764/music/refs/heads/main/app.apk">
+          备用 · llkk
+        </a>
+        <a class="btn" href="https://ghproxy.net/https://raw.githubusercontent.com/lime10764/music/refs/heads/main/app.apk">
+          备用 · proxy
+        </a>
+        <a class="btn" href="https://raw.gitmirror.com/lime10764/music/main/app.apk">
+          备用 · mirror
+        </a>
+        <a class="btn" href="https://raw.githubusercontent.com/lime10764/music/refs/heads/main/app.apk">
+          GitHub 原链
+        </a>
+      </div>
     </div>
-    <div class="btns">
-      <a class="btn strong" id="apkMain" href="https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
-        下载 App · 自动加速 <span class="arr">↓</span>
-      </a>
-      <a class="btn" href="https://gh.llkk.cc/https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
-        备用 · gh.llkk.cc
-      </a>
-      <a class="btn" href="https://ghproxy.net/https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
-        备用 · ghproxy
-      </a>
-      <a class="btn" href="https://raw.gitmirror.com/lime10764/LimeMusic/main/app.apk">
-        备用 · gitmirror
-      </a>
-      <a class="btn" href="https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk">
-        GitHub 原链
-      </a>
+    <!-- B：乐库（新算法，播放更快） -->
+    <div class="download">
+      <div class="txt">
+        <h3>乐库 <span class="ver">应用 B · 新算法</span></h3>
+        <p>全新算法内核，播放启动更快、解码更轻。追求速度选它。</p>
+        <p class="pick">哪个在你的机型上播放更快，就下哪个。</p>
+      </div>
+      <div class="btns">
+        <a class="btn strong" id="apkB" href="https://raw.githubusercontent.com/lime10764/music/refs/heads/main/%E4%B9%90%E5%BA%93_1.4.0_sign.apk">
+          下载 B · 自动加速 <span class="arr">↓</span>
+        </a>
+        <a class="btn" href="https://gh.llkk.cc/https://raw.githubusercontent.com/lime10764/music/refs/heads/main/%E4%B9%90%E5%BA%93_1.4.0_sign.apk">
+          备用 · llkk
+        </a>
+        <a class="btn" href="https://ghproxy.net/https://raw.githubusercontent.com/lime10764/music/refs/heads/main/%E4%B9%90%E5%BA%93_1.4.0_sign.apk">
+          备用 · proxy
+        </a>
+        <a class="btn" href="https://raw.gitmirror.com/lime10764/music/main/%E4%B9%90%E5%BA%93_1.4.0_sign.apk">
+          备用 · mirror
+        </a>
+        <a class="btn" href="https://raw.githubusercontent.com/lime10764/music/refs/heads/main/%E4%B9%90%E5%BA%93_1.4.0_sign.apk">
+          GitHub 原链
+        </a>
+      </div>
     </div>
   </section>
+  <div class="tip">
+    <b>怎么选：</b>两款应用功能一致（无广告、无 VIP、全部免费、完美适配安卓、稳定无闪退），只是<b>播放算法不同</b>。
+    建议两个都装上试一首歌，<b>哪个在你的手机上播放更快、更流畅，就留哪个</b>。
+    所有下载均自动从多个加速镜像中挑选当前可用的，点「自动加速」即可；某个备用不通时换下一个。
+  </div>
 
 </main>
 
@@ -270,7 +309,7 @@
   <div>
     <a href="https://lime10764.github.io/lime10764-liquid-glass-player/">网页版</a>
     ·
-    <a href="https://github.com/lime10764/LimeMusic">App 仓库</a>
+    <a href="https://github.com/lime10764/music">App 仓库</a>
   </div>
 </footer>
 
@@ -325,37 +364,57 @@
   }
   tryBg(0);
 
-  // APK 下载镜像候选（顺序 = 优先级），第一个能 HEAD 到就用它
-  var APK_BASE = "https://raw.githubusercontent.com/lime10764/LimeMusic/refs/heads/main/app.apk";
-  var apkCandidates = [
-    "https://gh.llkk.cc/" + encodeURIComponent(APK_BASE),
-    "https://ghproxy.net/" + encodeURIComponent(APK_BASE),
-    "https://raw.gitmirror.com/lime10764/LimeMusic/main/app.apk",
-    APK_BASE
-  ];
+  // 通用：探测一组镜像，把第一个可用的写到指定按钮的 href
+  function pickMirror(btnId, rawUrl){
+    var mirrorPrefixes = [
+      "https://gh.llkk.cc/",
+      "https://ghproxy.net/",
+      "https://raw.gitmirror.com/"
+    ];
+    // 生成候选：代理走「代理+原链」，gitmirror 走转换后的路径
+    var candidates = [];
+    // gitmirror 路径规则：raw.githubusercontent.com/{u}/{r}/refs/heads/{b}/{f} -> {prefix}{u}/{r}/main/{f}
+    // 注意：gitmirror 对中文文件名需解码为原始字符，不能保留 %XX
+    var gmPath = decodeURI(rawUrl)
+      .replace("https://raw.githubusercontent.com/", "")
+      .replace(/\/refs\/heads\/[^\/]+\//, "/main/");
+    mirrorPrefixes.forEach(function(prefix){
+      if(prefix.indexOf("gitmirror.com") >= 0){
+        candidates.push(prefix + gmPath);
+      } else {
+        candidates.push(prefix + encodeURI(rawUrl));
+      }
+    });
+    candidates.push(rawUrl); // 原链兜底
 
-  function tryApk(index){
-    if(index >= apkCandidates.length) return;
-    var mainBtn = document.getElementById('apkMain');
-    var xhr = new (window.XMLHttpRequest || window.ActiveXObject)('MSXML2.XMLHTTP.3.0', 'MSXML2.XMLHTTP');
-    try {
-      xhr.open('HEAD', apkCandidates[index], true);
-      xhr.timeout = 6000;
-      xhr.onload = function(){
-        if(xhr.status >= 200 && xhr.status < 400){
-          if(mainBtn){ mainBtn.href = apkCandidates[index]; }
-        } else {
-          tryApk(index + 1);
-        }
-      };
-      xhr.onerror = function(){ tryApk(index + 1); };
-      xhr.ontimeout = function(){ tryApk(index + 1); };
-      xhr.send();
-    } catch(e){
-      tryApk(index + 1);
+    var btn = document.getElementById(btnId);
+    function tryOne(index){
+      if(index >= candidates.length){ return; }
+      var xhr = new (window.XMLHttpRequest || window.ActiveXObject)('MSXML2.XMLHTTP.3.0', 'MSXML2.XMLHTTP');
+      try {
+        xhr.open('HEAD', candidates[index], true);
+        xhr.timeout = 6000;
+        xhr.onload = function(){
+          if(xhr.status >= 200 && xhr.status < 400){
+            if(btn){ btn.href = candidates[index]; }
+          } else {
+            tryOne(index + 1);
+          }
+        };
+        xhr.onerror = function(){ tryOne(index + 1); };
+        xhr.ontimeout = function(){ tryOne(index + 1); };
+        xhr.send();
+      } catch(e){
+        tryOne(index + 1);
+      }
     }
+    tryOne(0);
   }
-  tryApk(0);
+
+  // A：Lime Music
+  pickMirror("apkA", "https://raw.githubusercontent.com/lime10764/music/refs/heads/main/app.apk");
+  // B：乐库（中文文件名已 URL 编码，避免乱码）
+  pickMirror("apkB", "https://raw.githubusercontent.com/lime10764/music/refs/heads/main/%E4%B9%90%E5%BA%93_1.4.0_sign.apk");
 
   function openMailModal(){
     document.getElementById('mailModal').classList.add('show');
@@ -377,3 +436,4 @@
 
 </body>
 </html>
+
